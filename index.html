@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MANSUR – Portfolio</title>
+  <meta name="description" content="Professional portfolio of Your Name: projects, experience, skills, and contact." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ---------- CSS RESET ---------- */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    img, svg { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; padding: 0; margin: 0; }
+
+    /* ---------- THEME ---------- */
+    :root {
+      --bg: #0b1220;
+      --surface: #101828;
+      --elev: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --brand: #7c3aed; /* violet-600 */
+      --brand-700: #6d28d9;
+      --brand-800: #5b21b6;
+      --ok: #10b981;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+      --ring: rgba(124, 58, 237, 0.35);
+      --card: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      --shadow: 0 10px 30px rgba(0,0,0,0.25);
+      --radius: 18px;
+    }
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --elev: #f1f5f9;
+      --text: #0f172a;
+      --muted: #475569;
+      --brand: #7c3aed;
+      --brand-700: #6d28d9;
+      --brand-800: #5b21b6;
+      --ring: rgba(124, 58, 237, 0.35);
+      --card: linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.02));
+      --shadow: 0 10px 25px rgba(2,6,23,0.08);
+    }
+
+    body {
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(800px 400px at 10% -10%, rgba(124,58,237,0.20), transparent 60%),
+                  radial-gradient(600px 300px at 90% -10%, rgba(16,185,129,0.18), transparent 60%),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container { width: min(1100px, 92vw); margin-inline: auto; }
+
+    /* ---------- HEADER ---------- */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: saturate(1.2) blur(10px);
+      background: color-mix(in oklab, var(--bg) 80%, transparent);
+      border-bottom: 1px solid color-mix(in oklab, var(--text) 10%, transparent);
+    }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: 0.3px; }
+    .brand .logo { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: linear-gradient(135deg, var(--brand), var(--ok)); box-shadow: var(--shadow); }
+    .brand span { font-size: 1.05rem; }
+
+    .nav-links { display: flex; gap: 14px; align-items: center; }
+    .nav-links a { padding: 10px 12px; border-radius: 12px; color: var(--muted); font-weight: 600; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); background: color-mix(in oklab, var(--brand) 18%, transparent); }
+
+    .btn { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; border-radius: 14px; padding: 12px 16px; border: 1px solid color-mix(in oklab, var(--text) 12%, transparent); background: linear-gradient(180deg, color-mix(in oklab, var(--surface) 85%, transparent), color-mix(in oklab, var(--surface) 70%, transparent)); box-shadow: var(--shadow); }
+    .btn.primary { background: linear-gradient(180deg, var(--brand), var(--brand-700)); border: none; color: white; }
+    .btn.ghost { background: transparent; box-shadow: none; }
+
+    .theme-toggle, .menu-toggle { border: 1px solid color-mix(in oklab, var(--text) 12%, transparent); background: var(--surface); height: 42px; width: 42px; border-radius: 11px; display: grid; place-items: center; cursor: pointer; }
+    .controls { display: flex; align-items: center; gap: 8px; }
+
+    /* ---------- HERO ---------- */
+    .hero { padding: 70px 0 40px; display: grid; grid-template-columns: 1.4fr 1fr; gap: 36px; align-items: center; }
+    .headline { font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.15; font-weight: 900; letter-spacing: -0.02em; }
+    .sub { color: var(--muted); font-size: 1.05rem; max-width: 60ch; }
+    .actions { display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+    .hero-card { background: var(--card); padding: 18px; border-radius: var(--radius); border: 1px solid color-mix(in oklab, var(--text) 10%, transparent); }
+
+    /* ---------- SECTIONS ---------- */
+    section { padding: 70px 0; }
+    .section-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 18px; }
+    .section-sub { color: var(--muted); margin-bottom: 24px; }
+    .grid { display: grid; gap: 16px; }
+
+    /* Projects */
+    .projects { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+    .card { background: var(--card); border: 1px solid color-mix(in oklab, var(--text) 10%, transparent); border-radius: var(--radius); overflow: clip; transition: transform .2s ease, border-color .2s ease; }
+    .card:hover { transform: translateY(-4px); border-color: color-mix(in oklab, var(--brand) 30%, transparent); }
+    .card .cover { aspect-ratio: 16/9; background: linear-gradient(135deg, color-mix(in oklab, var(--brand) 35%, transparent), color-mix(in oklab, var(--ok) 35%, transparent)); display: grid; place-items: center; font-weight: 900; font-size: 1.1rem; letter-spacing: 1px; }
+    .card .body { padding: 14px; }
+    .card .title { font-weight: 800; margin-bottom: 6px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .tag { font-size: .8rem; padding: 6px 10px; border-radius: 12px; color: var(--muted); background: color-mix(in oklab, var(--surface) 60%, transparent); border: 1px solid color-mix(in oklab, var(--text) 12%, transparent); }
+
+    /* Skills */
+    .skills { grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); }
+    .skill { padding: 14px; border-radius: var(--radius); background: var(--card); border: 1px solid color-mix(in oklab, var(--text) 10%, transparent); display: grid; gap: 6px; }
+    .meter { height: 8px; background: color-mix(in oklab, var(--surface) 60%, transparent); border-radius: 999px; overflow: hidden; }
+    .meter > i { display: block; height: 100%; width: var(--w, 60%); background: linear-gradient(90deg, var(--brand), var(--ok)); }
+
+    /* Experience */
+    .timeline { position: relative; }
+    .timeline::before { content: ""; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: color-mix(in oklab, var(--text) 16%, transparent); }
+    .job { position: relative; margin-left: 36px; padding: 14px 14px 14px 18px; background: var(--card); border: 1px solid color-mix(in oklab, var(--text) 10%, transparent); border-radius: var(--radius); }
+    .job::before { content: ""; position: absolute; left: -28px; top: 18px; width: 14px; height: 14px; border-radius: 999px; background: var(--brand); box-shadow: 0 0 0 4px color-mix(in oklab, var(--brand) 35%, transparent); }
+
+    /* Contact */
+    .contact-grid { grid-template-columns: 1.2fr 1fr; align-items: start; }
+    form { display: grid; gap: 12px; }
+    .field { display: grid; gap: 6px; }
+    .input, textarea { padding: 12px 14px; border-radius: 12px; border: 1px solid color-mix(in oklab, var(--text) 12%, transparent); background: var(--surface); color: var(--text); outline: none; }
+    .input:focus, textarea:focus { border-color: var(--brand); box-shadow: 0 0 0 5px var(--ring); }
+
+    /* Footer */
+    footer { padding: 28px 0 60px; color: var(--muted); }
+    .social { display: flex; gap: 12px; }
+    .social a { padding: 10px; border-radius: 12px; border: 1px solid color-mix(in oklab, var(--text) 12%, transparent); background: var(--surface); }
+
+    /* ---------- UTIL ---------- */
+    .muted { color: var(--muted); }
+    .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .pill { padding: 6px 12px; border-radius: 999px; background: color-mix(in oklab, var(--brand) 18%, transparent); color: color-mix(in oklab, var(--brand-800) 80%, var(--text)); font-weight: 700; letter-spacing: .3px; }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .nav-links { position: fixed; inset: 64px 0 auto 0; background: var(--bg); padding: 10px 16px 16px; border-bottom: 1px solid color-mix(in oklab, var(--text) 10%, transparent); display: grid; gap: 6px; transform: translateY(-130%); transition: transform .25s ease; }
+      .nav-links.open { transform: translateY(0%); }
+    }
+
+    /* ---------- PRINT ---------- */
+    @media print {
+      header, .actions, .theme-toggle, .menu-toggle, .social { display: none !important; }
+      body { background: #fff; color: #111; }
+      .card, .job, .skill { break-inside: avoid; }
+    }
+.banner {
+  height: auto;
+  width: 100%;
+  background-image: url(images/back.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.banner div {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.banner h1 {
+  color: rgb(124, 196, 238);
+  font-family: 'Times New Roman', Times, serif;
+  font-size: medium;
+  font-size: 2rem;
+  margin: 0;
+}
+
+.banner img {
+  height: 50%;
+  width: 50%;
+  margin-left: 400px;
+  margin-top: 300px;
+}
+
+/* Desktop-specific styles */
+@media (min-width: 768px) {
+  .banner {
+    flex-wrap: nowrap;
+    height: 270px;
+    padding: 0;
+  }
+
+  .banner div {
+    width: 50%;
+    margin-bottom: 0;
+  }
+
+  .banner h1 {
+    text-align: right;
+    padding-top: 10px;
+    font-size: 2.5rem;
+  }
+
+  .banner img {
+    height: 250px;
+    padding-right: 180px;
+  }
+}
+  </style>
+</head>
+<body style=" background-color: rgb(0, 0, 0);">
+  <header>
+    <div class="container nav">
+      <a href="#home" class="brand" aria-label="Home">
+        <div class="logo" aria-hidden="true">
+          <!-- Simple monogram SVG -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M4 18V6l8-2 8 2v12l-8 2-8-2Z" stroke="white" stroke-width="2"/>
+            <path d="M8 9h8v6H8z" fill="white"/>
+          </svg>
+        </div>
+        <span style="color: rgb(195, 185, 185);text-shadow: #083068 2px 3px 4px;">SK.Mansur</span>
+      </a>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      
+      <div class="controls">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light theme" title="Toggle theme">
+          <svg id="iconMoon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8 8 0 0 1-10.45-10.45 1 1 0 0 0-.14-1.05 1 1 0 0 0-1.72.21A10 10 0 1 0 21.86 14.7a1 1 0 0 0-.22-1.72Z"/></svg>
+          <svg id="iconSun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display:none"><path d="M6.76 4.84l-1.8-1.79L3.17 4.84l1.79 1.79 1.8-1.79ZM1 13h3v-2H1v2Zm10 10h2v-3h-2v3Zm8.83-19.16l-1.79-1.79-1.8 1.79 1.8 1.79 1.79-1.79ZM20 11v2h3v-2h-3ZM6.76 19.16l-1.8 1.79 1.8 1.79 1.79-1.79-1.79-1.79ZM17.24 19.16l1.79 1.79 1.79-1.79-1.79-1.79-1.79 1.79ZM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z"/></svg>
+        </button>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" title="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <a class="btn primary" href="#contact">Hire Me</a>
+      </div>
+    </div>
+  </header><br><br><br>
+  <section class="banner">
+  <div>
+    <h1 style="text-align: center; ">PYTHON FULL-STACK DEVELOPER...©</h1>
+  </div>
+  <div>
+    <img src="./images/mn2.jpg" alt="Image">
+  </div>
+</section>
+  
+  <main id="home">
+    <!-- HERO -->
+    <section class="container hero" aria-labelledby="intro-title">
+      <div>
+        
+        <h1 id="intro-title" class="headline">Hello, I’m <span style="color: var(--brand)">Your Mansur</span> — a <span style="color: var(--ok)"> python Full‑Stack Developer</span> crafting delightful, accessible web apps.</h1>
+        <p class="sub">I specialize in building fast, reliable, and user‑friendly products with modern Python, and cloud Html And CSS. Below are selected projects and a concise snapshot of my experience.</p>
+        <div class="actions">
+          <div>
+        <a href="images/MansurResumee1.pdf" download class="btn primary">
+  Download Resume
+</a>
+
+
+          
+          </div>
+
+          <a class="btn" href="#projects">View Projects</a>
+        
+        </div>
+  
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="container" id="projects" aria-labelledby="projects-title">
+      <h2 class="section-title" id="projects-title">Selected Projects</h2>
+      <p class="section-sub">A few things I’ve built recently.</p>
+      <div class="grid projects">
+        <!-- Card 1 -->
+        <article class="card">
+          <a class="cover" href="#" target="_blank" rel="noopener" aria-label="Open project 1">
+            <span>Project One</span>
+          </a>
+          <div class="body">
+            <div class="title">Realtime Task Board</div>
+            <p class="muted">Vikrama Simhapuri University Web site </p>
+            <div class="tags">
+              <span class="tag">HTML and CSS</span>
+        
+            </div>
+          </div>
+        </article>
+        <!-- Card 2 -->
+        <article class="card">
+          <a class="cover" href="#" target="_blank" rel="noopener" aria-label="Open project 2">
+            <span>Project Two</span>
+          </a>
+          <div class="body">
+            <div class="title">Vision‑AI Inventory</div>
+            <p class="muted">Mouse moving with the Hand_Gestures with cv2 and mediapipe</p>
+            <div class="tags">
+              <span class="tag">Python</span>
+              <span class="tag">Flask</span>
+              <span class="tag">Python LIbraries </span>
+              
+            </div>
+          </div>
+        </article>
+        <!-- Card 3 -->
+        <article class="card">
+          <a class="cover" href="#" target="_blank" rel="noopener" aria-label="Open project 3">
+            <span>Project Three</span>
+          </a>
+          <div class="body">
+            <div class="title">Face Recogination and smart attendence</div>
+            <p class="muted"></p>
+            <div class="tags">
+              <span class="tag">Node</span>
+              <span class="tag">PostgreSQL</span>
+              <span class="tag">D3.js</span>
+            </div>
+          </div>
+        </article>
+        <!-- Card 4 -->
+        <article class="card">
+          <a class="cover" href="#" target="_blank" rel="noopener" aria-label="Open project 4">
+            <span>Project Four</span>
+          </a>
+          <div class="body">
+            <div class="title">Machine Learning</div>
+            <p class="muted">Eye Moment Tracker</p>
+            <div class="tags">
+              <span class="tag">OpenCV</span>
+              <span class="tag">playsound</span>
+              <span class="tag">mediapipe</span>
+              <span class="tag">Threading</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="container" id="skills" aria-labelledby="skills-title">
+      <h2 class="section-title" id="skills-title">Skills</h2>
+      <p class="section-sub">Technologies and tools I work with.</p>
+      <div class="grid skills">
+        <div class="skill">
+          <div class="row" style="justify-content: space-between;">
+            <strong>python</strong>
+            <span class="muted">Advanced</span>
+          </div>
+          <div class="meter" aria-hidden="true"><i style="--w: 90%"></i></div>
+        </div>
+        <div class="skill">
+          <div class="row" style="justify-content: space-between;">
+            <strong>Html and Css</strong>
+            <span class="muted">Advanced</span>
+          </div>
+          <div class="meter"><i style="--w: 88%"></i></div>
+        </div>
+        <div class="skill">
+          <div class="row" style="justify-content: space-between;">
+            <strong>React</strong>
+            <span class="muted">Intermediate</span>
+          </div>
+          <div class="meter"><i style="--w: 85%"></i></div>
+        </div>
+        <div class="skill">
+          <div class="row" style="justify-content: space-between;">
+            <strong>Node.js</strong>
+            <span class="muted">Intermediate</span>
+          </div>
+          <div class="meter"><i style="--w: 75%"></i></div>
+        </div>
+        <div class="skill">
+          <div class="row" style="justify-content: space-between;">
+            <strong>NO sql with MongoDB</strong>
+            <span class="muted">Intermediate</span>
+          </div>
+          <div class="meter"><i style="--w: 70%"></i></div>
+        </div>
+        <div class="skill">
+          <div class="row" style="justify-content: space-between;">
+            <strong>Figama Front-end-develoment</strong>
+            <span class="muted">Adavances</span>
+          </div>
+          </div>
+            <div class="skill">
+          <div class="row" style="justify-content: space-between;">
+            <strong>MIT app development</strong>
+            <span class="muted">Adavance</span>
+          </div>
+          <div class="meter"><i style="--w: 65%"></i></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="container" id="experience" aria-labelledby="exp-title">
+      <h2 class="section-title" id="exp-title">Experience</h2>
+      <p class="section-sub">Where I’ve worked and what I shipped.</p>
+      <div class="timeline" aria-label="Work history">
+        <article class="job">
+          <header class="row" style="justify-content: space-between; align-items: start;">
+            <div>
+              <strong>Intern In SKill DIZER</strong> · <span class="muted">Tech Company</span>
+            </div>
+            <span class="muted">Jan 2023 – Present · Remote</span>
+          </header>
+          <ul style="margin-top:8px; padding-left: 18px; list-style: disc;">
+            <li>Andriod application developed </li>
+            <li>I have Developed several types of andriod application by using MIT APP Inventory</li>
+          </ul>
+        </article>
+        <br/>
+        <article class="job">
+          <header class="row" style="justify-content: space-between; align-items: start;">
+            <div>
+              <strong>Long Term Internship</strong> · <span class="muted">Startup Inc.</span>
+            </div>
+            <span class="muted">Jul 2021 – Dec 2024 · On‑site</span>
+          </header>
+          <ul style="margin-top:8px; padding-left: 18px; list-style: disc;">
+            <li>Data Science with  Good coding skills</li>
+            <li>develped programmes by using the Data Science</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+<!-- ABOUT -->
+<section class="container" id="about" aria-labelledby="about-title">
+  <h2 class="section-title" id="about-title">About</h2>
+  <p>I’m a developer focused on building polished user experiences and resilient backends. I love solving product problems end-to-end: from research and design to clean, well-tested code and observability.</p>
+  <p>Outside of work, I contribute to open source and mentor students entering tech.</p>
+</section>
+
+<!-- EDUCATION -->
+<section class="container" id="education" aria-labelledby="edu-title">
+  <h2 class="section-title" id="edu-title">Education</h2>
+  <p class="section-sub">My academic background and achievements.</p>
+  
+  <div class="grid" style="grid-template-columns: 1fr; gap: 20px;">
+    <article class="hero-card">
+      <div class="row" style="justify-content: space-between;">
+        <div>
+          <div class="muted"></div>
+          <div style="font-weight:800">Master Of Computer Application</div>
+        </div>
+        <div>
+          <div class="muted">Year</div>
+          <div style="font-weight:800">2026</div>
+        </div>
+      </div>
+      <div class="row" style="margin-top:12px;">
+        <div class="pill">pursuing</div>
+        <div class="pill">Vikrama Simhapuri University College,Kakutur(Nellore)</div>
+      </div>
+    </article>
+    <!-- Degree 1 -->
+    <article class="hero-card">
+      <div class="row" style="justify-content: space-between;">
+        <div>
+          <div class="muted"></div>
+          <div style="font-weight:800">Bachelor of Science in MSCS</div>
+        </div>
+        <div>
+          <div class="muted">Graduated</div>
+          <div style="font-weight:800">2024</div>
+        </div>
+      </div>
+      <div class="row" style="margin-top:12px;">
+        <div class="pill">GPA 8.7 / 10</div>
+        <div class="pill">NBKR Science and Arts College, Vidyanagar(Tirupati Dt)</div>
+        <div class="pill">Affiliated to Vikrama Simhapuri University</div>
+      </div>
+    </article>
+
+    <!-- Degree 2 -->
+    <article class="hero-card">
+      <div class="row" style="justify-content: space-between;">
+        <div>
+          <div class="muted"></div>
+          <div style="font-weight:800">Intermediate (MPC)</div>
+        </div>
+        <div>
+          <div class="muted">Year</div>
+          <div style="font-weight:800">2021</div>
+        </div>
+      </div>
+      <div class="row" style="margin-top:12px;">
+        <div class="pill">Score: 608 / 1000</div>
+        <div class="pill">Sri Pragathi Jr. College, Kota(Nellore Dt)</div>
+      </div>
+    </article>
+
+    <!-- Degree 3 -->
+    <article class="hero-card">
+      <div class="row" style="justify-content: space-between;">
+        <div>
+          <div class="muted"></div>
+          <div style="font-weight:800">Secondary School Education</div>
+        </div>
+        <div>
+          <div class="muted">Year</div>
+          <div style="font-weight:800">2019</div>
+        </div>
+      </div>
+      <div class="row" style="margin-top:12px;">
+        <div class="pill">GPA 9.2 / 10</div>
+        <div class="pill">ZP High School, Mettu(Nellore Dt)</div>
+      </div>
+    </article>
+  </div>
+
+</section>
+
+  </main>
+
+  <footer>
+    <div class="container row" style="justify-content: space-between;">
+      <label style="color: brown;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Name :</label>
+      <div style="font-family: 'Times New Roman', Times, serif;color: rgb(23, 80, 193);"> Shaik Mansur</div>
+      <label style="color: brown;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">✉️Email :</label>
+      <div class="muted" style="color: blue;font-family: 'Lucida Sans', 'Lucida Sans Regular',"> moula.mansursk@gmail.com </div>
+       <label style="color: brown;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">📞   Phone Number :</label>
+       <div class="muted" style="color: blue;font-family: 'Lucida Sans', 'Lucida Sans Regular',">8332872762 </div>
+    </div>
+  </footer>
+
+  <script>
+    // ---- Theme Toggle ----
+    const root = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    const iconMoon = document.getElementById('iconMoon');
+    const iconSun = document.getElementById('iconSun');
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme) {
+      root.setAttribute('data-theme', storedTheme);
+      iconMoon.style.display = storedTheme === 'light' ? 'none' : '';
+      iconSun.style.display = storedTheme === 'light' ? '' : 'none';
+    }
+    themeToggle.addEventListener('click', () => {
+      const current = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', current);
+      localStorage.setItem('theme', current);
+      iconMoon.style.display = current === 'light' ? 'none' : '';
+      iconSun.style.display = current === 'light' ? '' : 'none';
+    });
+
+    // ---- Mobile Menu ----
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    menuToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+    // ---- Active Link Sync on Scroll ----
+    const links = [...navLinks.querySelectorAll('a')];
+    const sections = links.map(l => document.querySelector(l.getAttribute('href')));
+    const onScroll = () => {
+      const y = window.scrollY + 130; // offset for sticky header
+      let idx = 0;
+      for (let i = 0; i < sections.length; i++) {
+        const s = sections[i];
+        if (s && s.offsetTop <= y) idx = i;
+      }
+      links.forEach((l, i) => l.classList.toggle('active', i === idx));
+    };
+    document.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // ---- Footer Year ----
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ---- Contact form basic validation / UX ----
+    const form = document.getElementById('contactForm');
+    const note = document.getElementById('formNote');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const payload = Object.fromEntries(data.entries());
+      if (!payload.name || !payload.email || !payload.message) {
+        note.textContent = 'Please fill out all fields.';
+        note.style.color = getComputedStyle(root).getPropertyValue('--warn');
+        return;
+      }
+      try {
+        const res = await fetch(form.action, { method: 'POST', headers: { 'Accept': 'application/json' }, body: data });
+        if (res.ok) {
+          form.reset();
+          note.textContent = 'Thanks! Your message has been sent.';
+          note.style.color = getComputedStyle(root).getPropertyValue('--ok');
+        } else {
+          note.textContent = 'Something went wrong. Please try again later.';
+          note.style.color = getComputedStyle(root).getPropertyValue('--danger');
+        }
+      } catch (err) {
+        note.textContent = 'Network error. Please check your connection.';
+        note.style.color = getComputedStyle(root).getPropertyValue('--danger');
+      }
+    });
+  </script>
+</body>
+</html>
